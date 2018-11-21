@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"errors"
+	"github.com/elastos/Elastos.ELA/log"
 	"math"
 	"math/big"
 	"time"
@@ -101,6 +102,9 @@ func PowCheckBlockSanity(block *Block, powLimit *big.Int, timeSource MedianTimeS
 		for _, input := range txn.Inputs {
 			referKey := input.ReferKey()
 			if _, exists := existingTxInputs[referKey]; exists {
+				for _, tx := range block.Transactions {
+					log.Info(tx.String())
+				}
 				return errors.New("[PowCheckBlockSanity] block contains duplicate UTXO")
 			}
 			existingTxInputs[referKey] = struct{}{}
