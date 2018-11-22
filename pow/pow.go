@@ -377,8 +377,9 @@ out:
 		}
 		log.Debug("<================Packing Block==============>")
 		//time.Sleep(15 * time.Second)
-
+		log.Info("generate block begin")
 		msgBlock, err := pow.GenerateBlock(pow.PayToAddr)
+		log.Info("generate block end")
 		if err != nil {
 			log.Debug("generage block err", err)
 			continue
@@ -389,7 +390,9 @@ out:
 			log.Info("<================Solved Block==============>")
 			//send the valid block to p2p networkd
 			if msgBlock.Header.Height == DefaultLedger.Blockchain.GetBestHeight()+1 {
+				log.Info("add block begin")
 				inMainChain, isOrphan, err := DefaultLedger.Blockchain.AddBlock(msgBlock)
+				log.Info("add block end")
 				if err != nil {
 					log.Debug(err)
 					continue

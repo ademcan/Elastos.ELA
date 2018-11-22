@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	. "github.com/elastos/Elastos.ELA.Utility/common"
 	"github.com/elastos/Elastos.ELA/config"
@@ -36,7 +37,7 @@ func (pool *TxPool) Init() {
 //append transaction to txnpool when check ok.
 //1.check  2.check with ledger(db) 3.check with pool
 func (pool *TxPool) AppendToTxnPool(txn *Transaction) ErrCode {
-
+	log.Info("append to txn pool begin", txn.Hash())
 	if txn.IsCoinBaseTx() {
 		log.Warn("coinbase cannot be added into transaction pool", txn.Hash().String())
 		return ErrIneffectiveCoinbase
@@ -47,15 +48,18 @@ func (pool *TxPool) AppendToTxnPool(txn *Transaction) ErrCode {
 		log.Warn("[TxPool CheckTransactionSanity] failed", txn.Hash().String())
 		return errCode
 	}
+	log.Info("111")
 	if errCode := CheckTransactionContext(txn); errCode != Success {
 		log.Warn("[TxPool CheckTransactionContext] failed", txn.Hash().String())
 		return errCode
 	}
+	log.Info("222")
 	//verify transaction by pool with lock
 	if errCode := pool.verifyTransactionWithTxnPool(txn); errCode != Success {
 		log.Warn("[TxPool verifyTransactionWithTxnPool] failed", txn.Hash())
 		return errCode
 	}
+	log.Info("333")
 
 	txn.Fee = GetTxFee(txn, DefaultLedger.Blockchain.AssetID)
 	buf := new(bytes.Buffer)
@@ -67,11 +71,13 @@ func (pool *TxPool) AppendToTxnPool(txn *Transaction) ErrCode {
 		log.Debugf("Transaction duplicate %s", txn.Hash().String())
 		return ErrTransactionDuplicate
 	}
+	log.Info("append to txn pool end")
 	return Success
 }
 
 //get the transaction in txnpool
 func (pool *TxPool) GetTransactionPool(hasMaxCount bool) map[Uint256]*Transaction {
+	log.Info("get tx pool time begin:", time.Now())
 	pool.RLock()
 	count := config.Parameters.MaxTxsInBlock
 	if count <= 0 {
@@ -90,14 +96,17 @@ func (pool *TxPool) GetTransactionPool(hasMaxCount bool) map[Uint256]*Transactio
 		}
 	}
 	pool.RUnlock()
+	log.Info("get tx pool time end:", time.Now())
 	return txnMap
 }
 
 //clean the trasaction Pool with committed block.
 func (pool *TxPool) CleanSubmittedTransactions(block *Block) error {
+	log.Info("clean transaction begin")
 	pool.cleanTransactions(block.Transactions)
 	pool.cleanSidechainTx(block.Transactions)
 	pool.cleanSideChainPowTx()
+	log.Info("clean transaction end")
 
 	return nil
 }
