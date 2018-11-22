@@ -1,20 +1,24 @@
-﻿{
+{
   "Configuration": {
-    "Magic": 7630401,
+    "Magic": 2018001,
     "Version": 23,
     "SeedList": [
-      "127.0.0.1:30338"
+      "node-testnet-001.elastos.org:21338",
+      "node-testnet-002.elastos.org:21338",
+      "node-testnet-003.elastos.org:21338"
     ],
-    "HttpInfoPort": 20333,
+    "HttpInfoPort": 21333,
     "HttpInfoStart": true,
-    "HttpRestPort": 20334,
-    "HttpWsPort": 20335,
+    "HttpRestPort": 21334,
+    "HttpWsPort": 21335,
     "WsHeartbeatInterval": 60,
-    "HttpJsonPort": 20336,
-    "NodePort": 20338,
-    "NodeOpenPort": 20866,
-    "OpenService": true,
-    "PrintLevel": 0,
+    "HttpJsonPort": 21336,
+    "NoticeServerUrl": "",
+    "OauthServerUrl": "",
+    "NodePort": 21338,
+    "NodeOpenPort": 21866,
+    "OpenService": false,
+    "PrintLevel": 1,
     "MaxLogsSize": 0,
     "MaxPerLogSize": 0,
     "IsTLS": false,
@@ -25,12 +29,13 @@
     "MaxTransactionInBlock": 10000,
     "MaxBlockSize": 8000000,
     "MinCrossChainTxFee": 10000,
+    "FoundationAddress":"8ZNizBf4KhhPjeJRGpox6rPcHE5Np6tFx3",
     "PowConfiguration": {
-      "PayToAddr": "8VYXVxKKSAxkmRrfmGpQR2Kc66XhG6m3ta",
-      "AutoMining": true,
+      "PayToAddr": "EeEkSiRMZqg5rd9a2yPaWnvdPcikFtsrjE",
+      "AutoMining": false,
       "MinerInfo": "ELA",
       "MinTxFee": 100,
-      "ActiveNet": "TestNet"
+      "ActiveNet": "MainNet"
     },
     "Arbiters": [
       "03e333657c788a20577c0288559bd489ee65514748d18cb1dc7560ae4ce3d45613",
